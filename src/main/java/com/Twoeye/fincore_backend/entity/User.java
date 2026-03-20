@@ -1,9 +1,14 @@
 package com.Twoeye.fincore_backend.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "users")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // JPA를 위한 최소한의 문 열어두기
+@AllArgsConstructor // 빌더나 테스트를 위한 전체 생성자
+@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
