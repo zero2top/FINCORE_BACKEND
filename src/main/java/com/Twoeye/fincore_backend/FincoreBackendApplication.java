@@ -10,4 +10,5 @@ public class FincoreBackendApplication {
 		SpringApplication.run(FincoreBackendApplication.class, args);
 	}
 
+
 }
