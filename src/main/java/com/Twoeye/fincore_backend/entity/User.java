@@ -1,26 +1,25 @@
 package com.Twoeye.fincore_backend.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
 
 @Entity
-@Table(name = "users") // DB에는 users라는 이름으로 테이블이 생깁니다.
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
+@Table(name = "users")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // 고유 번호 (자동 증가)
+    private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String email; // 이메일 (중복 불가)
-
-    @Column(nullable = false)
-    private String password; // 비밀번호
+    @Column(unique = true, nullable = false)
+    private String loginId; // 로그인용 아이디, 중복 불가
 
     @Column(nullable = false)
-    private String name; // 이름
+    private String password;
+
+    @Column(nullable = false)
+    private String name; // 실명 (송금 시 필요)
+
+    @Column(unique = true, nullable = false)
+    private String phoneNumber; // 휴대폰 번호 (본인 인증 및 연락용), 중복 불가
+
+    private String email; // 선택 사항 (알림용)
 }
