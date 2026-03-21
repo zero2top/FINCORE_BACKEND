@@ -1,8 +1,8 @@
 package com.Twoeye.fincore_backend.entity;
 
+import com.Twoeye.fincore_backend.enums.SubscriptionStatus;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-
 public class ProductSubscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +38,7 @@ public class ProductSubscription {
     @Column(nullable = false)
     private LocalDate maturityDate;
 
-//    @Column(nullable = false)
-//    private enum status;
+    @Column(nullable = false)
+    private SubscriptionStatus status;
 
 }
