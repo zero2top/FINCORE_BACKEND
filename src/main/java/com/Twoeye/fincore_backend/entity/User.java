@@ -26,5 +26,6 @@ public class User {
     @Column(unique = true, nullable = false)
     private String phoneNumber; // 휴대폰 번호 (본인 인증 및 연락용), 중복 불가
 
-    private String email; // 선택 사항 (알림용)
+    @Column(unique = true, nullable = false)
+    private String email; // 이메일
 }
