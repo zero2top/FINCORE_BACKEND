@@ -1,8 +1,8 @@
 package com.Twoeye.fincore_backend.entity;
 
+import com.Twoeye.fincore_backend.enums.TransferStatus;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-
 public class Transfer {
 
     @Id
@@ -28,8 +27,8 @@ public class Transfer {
     @Column(nullable = false)
     private BigDecimal amount;
 
-//    @Column(nullable = false)
-//    private enum status;
+    @Column(nullable = false)
+    private TransferStatus status;
 
     @Column
     private String failReason;
