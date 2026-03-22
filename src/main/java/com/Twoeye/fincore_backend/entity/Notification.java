@@ -2,6 +2,9 @@ package com.Twoeye.fincore_backend.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -12,5 +15,19 @@ import lombok.*;
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long notificationId;
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user; // 알림을 받는 사용자
+
+    @Column(nullable = false)
+    private String message; // 알림 내용
+
+    @Column(nullable = false)
+    private boolean isRead = false; // 읽음 여부 (기본값은 안읽음)
+
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdAt; // 알림 발생 시간
 }
