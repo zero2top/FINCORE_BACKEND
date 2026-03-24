@@ -15,16 +15,16 @@ import java.time.LocalDate;
 public class ProductSubscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(nullable = false)
-    private Long productId;
+    private String productId;
 
     @Column(nullable = false)
-    private Long memberId;
+    private String memberId;
 
     @Column(nullable = false)
-    private Long accountId;
+    private String accountId;
 
     @Column(nullable = false)
     private BigDecimal amount;

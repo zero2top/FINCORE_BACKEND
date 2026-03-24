@@ -15,7 +15,7 @@ import java.time.LocalDate;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // Account 자체의 고유 PK (1, 2, 3...)
+    private String id;
 
     @Column(unique = true, nullable = false)
     private String accountNumber;
