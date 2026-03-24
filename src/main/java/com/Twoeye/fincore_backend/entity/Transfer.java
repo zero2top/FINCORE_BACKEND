@@ -19,10 +19,10 @@ public class Transfer {
     private Long id;
 
     @Column(nullable = false)
-    private Long fromAccountId;
+    private String fromAccountId;
 
     @Column(nullable = false)
-    private Long toAccountId;
+    private String toAccountNumber;
 
     @Column(nullable = false)
     private BigDecimal amount;

@@ -1,7 +1,10 @@
 package com.Twoeye.fincore_backend.entity;
 
+import com.Twoeye.fincore_backend.enums.AccountStatus;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "accounts")
@@ -15,9 +18,25 @@ public class Account {
     private Long id; // Account 자체의 고유 PK (1, 2, 3...)
 
     @Column(unique = true, nullable = false)
-    private String accountNumber; // 실제 계좌번호 (예: 110-123-456)
+    private String accountNumber;
 
+    @Column(nullable = false)
+    private String memberId;
+
+    @Column(nullable = false)
+    private String productId;
+
+    @Column(nullable = false)
     private Long balance; // 잔액
+
+    @Column(nullable = false)
+    private int dailyTransferAmount;
+
+    @Column(nullable = false)
+    private AccountStatus status;
+
+    @Column(nullable = false)
+    private LocalDate createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY) // 여러 계좌가 한 명의 유저에게 속함
     @JoinColumn(name = "user_id") //User의 user_id와 연결됨.
