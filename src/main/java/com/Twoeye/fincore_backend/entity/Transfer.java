@@ -3,6 +3,8 @@ package com.Twoeye.fincore_backend.entity;
 import com.Twoeye.fincore_backend.enums.TransferStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -15,8 +17,8 @@ import java.time.LocalDate;
 public class Transfer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    @UuidGenerator
+    private String transferId;
 
     @Column(nullable = false)
     private String fromAccountId;

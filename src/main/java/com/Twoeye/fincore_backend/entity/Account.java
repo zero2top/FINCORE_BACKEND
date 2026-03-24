@@ -3,6 +3,7 @@ package com.Twoeye.fincore_backend.entity;
 import com.Twoeye.fincore_backend.enums.AccountStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDate;
 
@@ -14,8 +15,8 @@ import java.time.LocalDate;
 @Builder
 public class Account {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    @UuidGenerator
+    private String accountId;
 
     @Column(unique = true, nullable = false)
     private String accountNumber;

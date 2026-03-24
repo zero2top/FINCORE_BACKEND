@@ -3,6 +3,7 @@ package com.Twoeye.fincore_backend.entity;
 import com.Twoeye.fincore_backend.enums.ProductType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
 
@@ -15,8 +16,8 @@ import java.math.BigDecimal;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    @UuidGenerator
+    private String productId;
 
     @Column(nullable = false, unique = true)
     private String productName; // 상품명 (예: "싸이월드 정기예금", "청년희망적금")
