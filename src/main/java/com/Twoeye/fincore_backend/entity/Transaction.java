@@ -1,25 +1,51 @@
 package com.Twoeye.fincore_backend.entity;
 
+import com.Twoeye.fincore_backend.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "transactions")
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // JPA를 위한 최소한의 문 열어두기
-@AllArgsConstructor // 빌더나 테스트를 위한 전체 생성자
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class Transaction {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // Transaction의 자체 고유 id
+    @UuidGenerator
+    @Column(name = "transaction_id")
+    private String transactionId;
 
-    @Column(unique = true, nullable = false)
-    private String accountNumber; // 실제 계좌번호 (예: 110-123-456)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account; // 거래가 발생한 계좌
 
-    private Long balance; // 잔액
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "transfer_id")
+    private Transfer transfer; // 이체로 인한 거래일 경우 연결 (nullable)
 
-    @ManyToOne(fetch = FetchType.LAZY) // 여러 계좌가 한 명의 유저에게 속함
-    @JoinColumn(name = "user_id") //User의 user_id와 연결됨.
-    private User user;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TransactionType type; // DEPOSIT / WITHDRAWAL / TRANSFER
+
+    @Column(nullable = false, precision = 18, scale = 2)
+    private BigDecimal amount; // 거래 금액
+
+    @Column(name = "balance_after", nullable = false, precision = 18, scale = 2)
+    private BigDecimal balanceAfter; // 거래 후 잔액
+
+    @Column
+    private String counterparty; // 상대방 계좌번호 또는 이름 (이체 시)
+
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 }
