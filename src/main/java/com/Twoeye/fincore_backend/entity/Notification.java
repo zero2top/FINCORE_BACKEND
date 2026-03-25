@@ -1,36 +1,47 @@
 package com.Twoeye.fincore_backend.entity;
 
+import com.Twoeye.fincore_backend.enums.NotificationType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-
 @Entity
+@Table(name = "notifications")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "notifications")
 public class Notification {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @UuidGenerator
+    @Column(name = "notification_id")
+    private String notificationId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user; // 알림을 받는 사용자
+    @JoinColumn(name = "member_id", nullable = false)
+    private User user;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private NotificationType type; // TRANSFER / SUBSCRIPTION / SYSTEM / SECURITY
 
     @Column(nullable = false)
-    private String message; // 알림 내용
+    private String title;
 
     @Column(nullable = false)
-    private boolean isRead = false; // 읽음 여부 (기본값은 안읽음)
+    private String message;
+
+    @Column(name = "is_read", nullable = false)
+    @Builder.Default
+    private boolean isRead = false;
 
     @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt; // 알림 발생 시간
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 }

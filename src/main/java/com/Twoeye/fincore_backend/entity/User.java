@@ -1,31 +1,60 @@
 package com.Twoeye.fincore_backend.entity;
 
+import com.Twoeye.fincore_backend.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // JPA를 위한 최소한의 문 열어두기
-@AllArgsConstructor // 빌더나 테스트를 위한 전체 생성자
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String loginId; // 로그인용 아이디, 중복 불가
+    @Id
+    @UuidGenerator
+    @Column(name = "user_id")
+    private String userId;
+
+    @Column(name = "login_id", unique = true, nullable = false)
+    private String loginId;
 
     @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
-    private String name; // 실명 (송금 시 필요)
+    private String name;
 
-    @Column(unique = true, nullable = false)
-    private String phoneNumber; // 휴대폰 번호 (본인 인증 및 연락용), 중복 불가
+    @Column(name = "phone_number", unique = true, nullable = false)
+    private String phoneNumber;
 
-    @Column(unique = true, nullable = false)
-    private String email; // 이메일
+    @Column(nullable = false)
+    private String pin; // 간편 결제/이체용 PIN 번호
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private UserStatus status = UserStatus.ACTIVE;
+
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    // 연관관계 편의를 위한 OneToMany (필요 시 사용)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Account> accounts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Notification> notifications = new ArrayList<>();
 }
