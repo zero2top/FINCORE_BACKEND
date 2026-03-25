@@ -1,7 +1,0 @@
-# Default ignored files
-/shelf/
-/workspace.xml
-# Editor-based HTTP Client requests
-/httpRequests/
-# 설정 파일 제외
-src/main/resources/application.yml
