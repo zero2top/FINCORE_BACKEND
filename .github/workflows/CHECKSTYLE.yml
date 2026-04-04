@@ -16,10 +16,15 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - name: Run Checkstyle
-        run: ./gradlew checkstyleMain
+        id: checkstyle
+        run: |
+          ./gradlew checkstyleMain 2>&1 | tee checkstyle-output.txt
+          exit ${PIPESTATUS[0]}
       - name: Comment on failure
         if: failure()
         run: |
-          gh pr comment ${{ github.event.pull_request.number }} --body "❌Checkstyle 실패"
+          ERROR=$(grep -o '[^ ]*\.java:[0-9]*: error:.*' checkstyle-output.txt | head -5 | sed 's/\/home\/runner\/work\/FINCORE_BACKEND\/FINCORE_BACKEND\///' | tr '\n' '\n')
+          gh pr comment ${{ github.event.pull_request.number }} --body "❌ Checkstyle 실패!
+          $ERROR"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
