@@ -1,6 +1,5 @@
-package com.Twoeye.fincore_backend.domain.repository;
+package com.Twoeye.fincore_backend.domain.subscription;
 
-import com.Twoeye.fincore_backend.domain.subscription.ProductSubscription;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductSubscriptionRepository extends JpaRepository<ProductSubscription,String> {
