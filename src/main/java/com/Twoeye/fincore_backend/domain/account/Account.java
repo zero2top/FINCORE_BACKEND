@@ -21,7 +21,7 @@ public class Account {
     @Id
     @UuidGenerator
     @Column(name = "account_id")
-    private String accountId;
+    private String accountId;ㅁ
 
     @Column(name = "account_number", unique = true, nullable = false)
     private String accountNumber;
