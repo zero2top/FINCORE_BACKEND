@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Table(name = "products")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 public class Product {
 

@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Table(name = "transactions")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 public class Transaction {
@@ -24,13 +24,11 @@ public class Transaction {
     @Column(name = "transaction_id")
     private String transactionId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id", nullable = false)
-    private Account account; // 거래가 발생한 계좌
+    @Column(name = "account_id", nullable = false, updatable = false)
+    private String accountId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "transfer_id")
-    private Transfer transfer; // 이체로 인한 거래일 경우 연결 (nullable)
+    @Column(name = "transfer_id", updatable = false)
+    private String transferId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

@@ -8,14 +8,12 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 public class User {
@@ -38,7 +36,7 @@ public class User {
     private String phoneNumber;
 
     @Column(nullable = false)
-    private String pin; // 간편 결제/이체용 PIN 번호
+    private String pin;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -48,13 +46,4 @@ public class User {
     @CreatedDate
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
-
-    // 연관관계 편의를 위한 OneToMany (필요 시 사용)
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
-    private List<Account> accounts = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
-    private List<Notification> notifications = new ArrayList<>();
 }

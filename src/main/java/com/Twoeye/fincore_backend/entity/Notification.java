@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Table(name = "notifications")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 public class Notification {
@@ -23,9 +23,8 @@ public class Notification {
     @Column(name = "notification_id")
     private String notificationId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
-    private User user;
+    @Column(name = "user_id", nullable = false, updatable = false)
+    private String userId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

@@ -4,20 +4,24 @@ import com.Twoeye.fincore_backend.enums.TransferStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Transfers")
+@Table(name = "transfers")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class Transfer {
 
     @Id
     @UuidGenerator
+    @Column(name = "transfer_id", updatable = false)
     private String transferId;
 
     @Column(nullable = false)
@@ -26,11 +30,13 @@ public class Transfer {
     @Column(nullable = false)
     private String toAccountNumber;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 18, scale = 2)
     private BigDecimal amount;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TransferStatus status;
+    @Builder.Default
+    private TransferStatus status = TransferStatus.PENDING;
 
     @Column
     private String failReason;
@@ -38,10 +44,21 @@ public class Transfer {
     @Column(unique = true,nullable = false)
     private String idempotencyKey;
 
-    @Column(nullable = false)
-    private LocalDate requestedTime;
 
-    @Column(nullable = false)
-    private LocalDate completedTime;
+    @CreatedDate
+    @Column(name = "requested_at", updatable = false)
+    private LocalDateTime requestedAt;
 
+    @Column
+    private LocalDateTime completedAt;
+
+    public void complete(LocalDateTime completedAt) {
+        this.status = TransferStatus.COMPLETED;
+        this.completedAt = completedAt;
+    }
+
+    public void fail(String failReason) {
+        this.status = TransferStatus.FAILED;
+        this.failReason = failReason;
+    }
 }

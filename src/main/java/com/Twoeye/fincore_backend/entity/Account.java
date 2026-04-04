@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Table(name = "accounts")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 public class Account {
@@ -27,22 +27,19 @@ public class Account {
     @Column(name = "account_number", unique = true, nullable = false)
     private String accountNumber;
 
-    // Member와 다대일 연관관계
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
-    private User user;
+    @Column(name = "user_id", nullable = false)
+    private String userId;
 
-    // Product와 다대일 연관관계 (상품 종류 확인용)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @Column(name = "product_id", nullable = false)
+    private String productId;
 
     @Column(nullable = false, precision = 18, scale = 2)
     @Builder.Default
-    private BigDecimal balance = BigDecimal.ZERO; // 잔액
+    private BigDecimal balance = BigDecimal.ZERO;
 
     @Column(name = "daily_transfer_amount", nullable = false, precision = 18, scale = 2)
-    private BigDecimal dailyTransferAmount; // 일일 이체 한도
+    @Builder.Default
+    private BigDecimal dailyTransferAmount = new BigDecimal("3000000");
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -52,4 +49,20 @@ public class Account {
     @CreatedDate
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+
+    public void deposit(BigDecimal amount) {
+        this.balance = this.balance.add(amount);
+    }
+
+    public void withdraw(BigDecimal amount) {
+        this.balance = this.balance.subtract(amount);
+    }
+
+    public void close() {
+        this.status = AccountStatus.CLOSED;
+    }
+
+    public void dormant() {
+        this.status = AccountStatus.DORMANT;
+    }
 }
