@@ -23,7 +23,7 @@ jobs:
       - name: Comment on failure
         if: failure()
         run: |
-          ERROR=$(grep -o '[^ ]*\.java:[0-9]*: error:.*' checkstyle-output.txt | head -5 | sed 's/\/home\/runner\/work\/FINCORE_BACKEND\/FINCORE_BACKEND\///' | tr '\n' '\n')
+          ERROR=$(grep -o '[^ ]*\.java:[0-9]*: error:.*' checkstyle-output.txt | head -5 | uniq sed 's/\/home\/runner\/work\/FINCORE_BACKEND\/FINCORE_BACKEND\///' | tr '\n' '\n')
           gh pr comment ${{ github.event.pull_request.number }} --body "❌ Checkstyle 실패!
           $ERROR"
         env:
