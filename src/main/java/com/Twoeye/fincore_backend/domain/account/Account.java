@@ -20,7 +20,7 @@ public class Account {
 
     @Id
     @UuidGenerator
-    @Column(name = "account_id")
+    @Column(name = "account_id")vsdv
     private String accountId;
 
     @Column(name = "account_number", unique = true, nullable = false)
