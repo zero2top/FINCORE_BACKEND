@@ -1,8 +1,5 @@
 package com.Twoeye.fincore_backend.enums;
 
-import lombok.Getter;
-
-@Getter
 public enum SubscriptionStatus {
     ACTIVE,      // 가입 중 (운용 중)
     MATURED,     // 만기 완료
