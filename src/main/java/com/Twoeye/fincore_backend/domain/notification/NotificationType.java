@@ -1,4 +1,4 @@
-package com.Twoeye.fincore_backend.enums;
+package com.Twoeye.fincore_backend.domain.notification;
 
 public enum NotificationType {
     TRANSFER,     // 이체 알림

@@ -1,6 +1,5 @@
-package com.Twoeye.fincore_backend.entity;
+package com.Twoeye.fincore_backend.domain.transfer;
 
-import com.Twoeye.fincore_backend.enums.TransferStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;

@@ -1,4 +1,4 @@
-package com.Twoeye.fincore_backend.enums;
+package com.Twoeye.fincore_backend.domain.transfer;
 
 public enum TransferStatus {
     PENDING,    // 이체 요청됨 (처리 대기)

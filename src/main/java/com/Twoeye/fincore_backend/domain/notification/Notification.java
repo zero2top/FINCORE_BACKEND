@@ -1,6 +1,5 @@
-package com.Twoeye.fincore_backend.entity;
+package com.Twoeye.fincore_backend.domain.notification;
 
-import com.Twoeye.fincore_backend.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
@@ -10,38 +9,35 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users")
+@Table(name = "notifications")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class User {
+public class Notification {
 
     @Id
     @UuidGenerator
-    @Column(name = "user_id")
+    @Column(name = "notification_id")
+    private String notificationId;
+
+    @Column(name = "user_id", nullable = false, updatable = false)
     private String userId;
-
-    @Column(name = "login_id", unique = true, nullable = false)
-    private String loginId;
-
-    @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false)
-    private String name;
-
-    @Column(name = "phone_number", unique = true, nullable = false)
-    private String phoneNumber;
-
-    @Column(nullable = false)
-    private String pin;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    private NotificationType type; // TRANSFER / SUBSCRIPTION / SYSTEM / SECURITY
+
+    @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
+    private String message;
+
+    @Column(name = "is_read", nullable = false)
     @Builder.Default
-    private UserStatus status = UserStatus.ACTIVE;
+    private boolean isRead = false;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)

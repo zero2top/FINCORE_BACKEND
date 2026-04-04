@@ -1,6 +1,5 @@
-package com.Twoeye.fincore_backend.entity;
+package com.Twoeye.fincore_backend.domain.transaction;
 
-import com.Twoeye.fincore_backend.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;

@@ -1,4 +1,4 @@
-package com.Twoeye.fincore_backend.enums;
+package com.Twoeye.fincore_backend.domain.subscription;
 
 public enum SubscriptionStatus {
     ACTIVE,      // 가입 중 (운용 중)

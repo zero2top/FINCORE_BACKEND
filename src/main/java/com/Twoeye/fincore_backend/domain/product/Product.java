@@ -1,6 +1,5 @@
-package com.Twoeye.fincore_backend.entity;
+package com.Twoeye.fincore_backend.domain.product;
 
-import com.Twoeye.fincore_backend.enums.ProductType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;

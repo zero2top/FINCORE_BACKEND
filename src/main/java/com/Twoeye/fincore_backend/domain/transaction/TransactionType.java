@@ -1,4 +1,4 @@
-package com.Twoeye.fincore_backend.enums;
+package com.Twoeye.fincore_backend.domain.transaction;
 
 public enum TransactionType {
     DEPOSIT,    // 입금

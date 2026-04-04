@@ -1,4 +1,4 @@
-package com.Twoeye.fincore_backend.enums;
+package com.Twoeye.fincore_backend.domain.product;
 
 public enum ProductType {
     SAVINGS,    // 적금
