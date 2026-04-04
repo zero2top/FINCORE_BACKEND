@@ -30,7 +30,7 @@ public class Account {
     private String userId;
 
     @Column(name = "product_id", nullable = false)
-    private String productId;
+    private String productId;aaaaa
 
     @Column(nullable = false, precision = 18, scale = 2)
     @Builder.Default
