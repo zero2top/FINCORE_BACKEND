@@ -143,5 +143,5 @@ replay_pid*
 **/.gradle
 **/.idea
 
-
- **/application.yaml
+**/application.yml
+dump.sql

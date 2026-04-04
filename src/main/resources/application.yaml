@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: fincore-backend
+  datasource:
+    url: jdbc:mysql://junction.proxy.rlwy.net:17707/railway
+    username: root
+    password: zZDPQAreLntjVfzOLqVKfutEjxxbLbgI
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
