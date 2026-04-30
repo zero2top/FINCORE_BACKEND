@@ -1,8 +1,8 @@
 package com.Twoeye.fincore_backend.presentation.common;
 
-import com.Twoeye.fincore_backend.domain.account.exception.AccountNotFoundException;
-import com.Twoeye.fincore_backend.domain.account.exception.AccountNotActiveException;
-import com.Twoeye.fincore_backend.domain.account.exception.InsufficientBalanceException;
+import com.Twoeye.fincore_backend.domain.common.exception.DomainException;
+import com.Twoeye.fincore_backend.domain.common.exception.EntityNotFoundException;
+import com.Twoeye.fincore_backend.domain.transfer.exception.DuplicateTransferException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,15 +12,21 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(AccountNotFoundException.class)
+    @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiResponse<Void> handleAccountNotFound(AccountNotFoundException e) {
+    public ApiResponse<Void> handleEntityNotFound(EntityNotFoundException e) {
         return ApiResponse.fail(e.getMessage());
     }
 
-    @ExceptionHandler({AccountNotActiveException.class, InsufficientBalanceException.class})
+    @ExceptionHandler(DuplicateTransferException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ApiResponse<Void> handleDuplicateTransfer(DuplicateTransferException e) {
+        return ApiResponse.fail(e.getMessage());
+    }
+
+    @ExceptionHandler(DomainException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public ApiResponse<Void> handleAccountBusinessException(RuntimeException e) {
+    public ApiResponse<Void> handleDomainException(DomainException e) {
         return ApiResponse.fail(e.getMessage());
     }
 
