@@ -1,9 +1,11 @@
 package com.Twoeye.fincore_backend.config;
 
 import com.Twoeye.fincore_backend.application.auth.CustomUserDetailsService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -17,12 +19,15 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
+import java.util.Map;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
+    private final ObjectMapper objectMapper;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -35,15 +40,32 @@ public class SecurityConfig {
             // 세션 설정
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                .maximumSessions(1)                 // 동시 로그인 1개 제한
-                .maxSessionsPreventsLogin(false)    // 새 로그인 시 기존 세션 만료
+                .maximumSessions(1)
+                .maxSessionsPreventsLogin(false)
             )
             // 접근 권한
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/login", "/users", "/products", "/products/**").permitAll()
                 .anyRequest().authenticated()
             )
-            // Form 로그인, HTTP Basic, 기본 로그아웃 비활성화 (AuthController에서 직접 처리)
+            // 미인증 요청 → 401 JSON
+            .exceptionHandling(ex -> ex
+                .authenticationEntryPoint((request, response, e) -> {
+                    response.setStatus(401);
+                    response.setContentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");
+                    response.getWriter().write(objectMapper.writeValueAsString(
+                            Map.of("success", false, "data", null, "message", "로그인이 필요합니다.")
+                    ));
+                })
+                // 권한 없는 요청 → 403 JSON
+                .accessDeniedHandler((request, response, e) -> {
+                    response.setStatus(403);
+                    response.setContentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");
+                    response.getWriter().write(objectMapper.writeValueAsString(
+                            Map.of("success", false, "data", null, "message", "접근 권한이 없습니다.")
+                    ));
+                })
+            )
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable())
             .logout(logout -> logout.disable());
@@ -63,7 +85,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // 세션 만료 이벤트 처리 (maximumSessions 기능에 필요)
     @Bean
     public HttpSessionEventPublisher httpSessionEventPublisher() {
         return new HttpSessionEventPublisher();
