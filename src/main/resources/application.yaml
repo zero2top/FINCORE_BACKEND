@@ -10,3 +10,17 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: always  # 세션 테이블 자동 생성
+
+server:
+  servlet:
+    session:
+      cookie:
+        http-only: true    # JS에서 쿠키 접근 불가 (XSS 방어)
+        secure: false      # HTTPS 환경에서는 true로 변경
+        same-site: strict  # CSRF 방어
+        max-age: 3600      # 세션 쿠키 유효시간 1시간
+      timeout: 3600        # 서버 세션 만료 시간 1시간

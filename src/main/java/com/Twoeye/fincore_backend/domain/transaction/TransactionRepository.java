@@ -1,8 +1,6 @@
 package com.Twoeye.fincore_backend.domain.transaction;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,7 +10,8 @@ public interface TransactionRepository {
 
     Optional<Transaction> findById(String transactionId);
 
-    Page<Transaction> findAllByAccountId(String accountId, Pageable pageable);
+    // cursor: null이면 첫 페이지, size+1개 조회해서 hasNext 판별
+    List<Transaction> findAllByAccountId(String accountId, LocalDateTime cursor, int size);
 
     List<Transaction> findAllByTransferId(String transferId);
 }

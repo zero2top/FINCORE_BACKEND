@@ -3,10 +3,11 @@ package com.Twoeye.fincore_backend.infrastructure.notification;
 import com.Twoeye.fincore_backend.domain.notification.Notification;
 import com.Twoeye.fincore_backend.domain.notification.NotificationRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -26,13 +27,13 @@ public class NotificationRepositoryImpl implements NotificationRepository {
     }
 
     @Override
-    public Page<Notification> findByUserId(String userId, Pageable pageable) {
-        return jpaRepository.findByUserIdOrderByCreatedAtDesc(userId, pageable);
+    public List<Notification> findByUserId(String userId, LocalDateTime cursor, int size) {
+        return jpaRepository.findCursorByUserId(userId, cursor, PageRequest.of(0, size));
     }
 
     @Override
-    public Page<Notification> findUnreadByUserId(String userId, Pageable pageable) {
-        return jpaRepository.findByUserIdAndIsReadFalseOrderByCreatedAtDesc(userId, pageable);
+    public List<Notification> findUnreadByUserId(String userId, LocalDateTime cursor, int size) {
+        return jpaRepository.findCursorUnreadByUserId(userId, cursor, PageRequest.of(0, size));
     }
 
     @Override

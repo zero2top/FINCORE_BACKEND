@@ -1,17 +1,18 @@
 package com.Twoeye.fincore_backend.domain.notification;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 public interface NotificationRepository {
     Notification save(Notification notification);
 
     Optional<Notification> findById(String notificationId);
 
-    Page<Notification> findByUserId(String userId, Pageable pageable);
+    // cursor: null이면 첫 페이지, size+1개 조회해서 hasNext 판별
+    List<Notification> findByUserId(String userId, LocalDateTime cursor, int size);
 
-    Page<Notification> findUnreadByUserId(String userId, Pageable pageable);
+    List<Notification> findUnreadByUserId(String userId, LocalDateTime cursor, int size);
 
     long countUnreadByUserId(String userId);
 

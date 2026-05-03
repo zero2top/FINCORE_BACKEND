@@ -3,10 +3,10 @@ package com.Twoeye.fincore_backend.infrastructure.transaction;
 import com.Twoeye.fincore_backend.domain.transaction.Transaction;
 import com.Twoeye.fincore_backend.domain.transaction.TransactionRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,8 +27,8 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     @Override
-    public Page<Transaction> findAllByAccountId(String accountId, Pageable pageable) {
-        return jpaRepository.findAllByAccountIdOrderByCreatedAtDesc(accountId, pageable);
+    public List<Transaction> findAllByAccountId(String accountId, LocalDateTime cursor, int size) {
+        return jpaRepository.findCursorByAccountId(accountId, cursor, PageRequest.of(0, size));
     }
 
     @Override
