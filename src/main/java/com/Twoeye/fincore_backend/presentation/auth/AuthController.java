@@ -44,7 +44,26 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.ok(new LoginResponse(request.loginId())));
     }
 
-    @GetMapping("/me")
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse<Void>> logout(HttpServletRequest request, HttpServletResponse response) {
+        securityContextRepository.saveContext(SecurityContextHolder.createEmptyContext(), request, response);
+        SecurityContextHolder.clearContext();
+
+        var session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+
+        var cookie = new jakarta.servlet.http.Cookie("JSESSIONID", null);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok(ApiResponse.ok(null));
+    }
+
+    @GetMapping("/myPage")
     public ResponseEntity<ApiResponse<LoginResponse>> me(Authentication authentication) {
         return ResponseEntity.ok(ApiResponse.ok(new LoginResponse(authentication.getName())));
     }

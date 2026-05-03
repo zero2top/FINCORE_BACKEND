@@ -43,20 +43,10 @@ public class SecurityConfig {
                 .requestMatchers("/auth/login", "/users", "/products", "/products/**").permitAll()
                 .anyRequest().authenticated()
             )
-            // Form 로그인, HTTP Basic 비활성화 (REST API 방식 사용)
+            // Form 로그인, HTTP Basic, 기본 로그아웃 비활성화 (AuthController에서 직접 처리)
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable())
-            // 로그아웃
-            .logout(logout -> logout
-                .logoutUrl("/auth/logout")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .logoutSuccessHandler((request, response, authentication) -> {
-                    response.setStatus(200);
-                    response.setContentType("application/json;charset=UTF-8");
-                    response.getWriter().write("{\"success\":true,\"data\":null,\"message\":null}");
-                })
-            );
+            .logout(logout -> logout.disable());
 
         return http.build();
     }
